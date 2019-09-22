@@ -1,0 +1,27 @@
+{
+  "name": "puhelinluettelo-backend",
+  "version": "0.0.1",
+  "description": "Backend for puhelinluettelo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mristeli/puhelinluettelo-backend.git"
+  },
+  "author": "Matti Risteli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mristeli/puhelinluettelo-backend/issues"
+  },
+  "homepage": "https://github.com/mristeli/puhelinluettelo-backend#readme",
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
