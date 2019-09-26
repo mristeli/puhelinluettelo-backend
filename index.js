@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express() 
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Contact = require('./models/contact')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -15,27 +17,28 @@ morgan.token('postdata', function (req, res) {
 })
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postdata'))
-
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-  }
-]
+// let persons = [
+//   {
+//     "name": "Arto Hellas",
+//     "number": "040-123456",
+//     "id": 1
+//   },
+//   {
+//     "name": "Ada Lovelace",
+//     "number": "39-44-5323523",
+//     "id": 2
+//   },
+//   {
+//     "name": "Dan Abramov",
+//     "number": "12-43-234345",
+//     "id": 3
+//   }
+// ]
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Contact.find({}).then(contacts => {
+    response.json(contacts)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -55,28 +58,24 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 
-const generateId = () => {
-  return Math.floor(Math.random() * 10**9)
-}
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
   if(!body.name || !body.number) {
     return response.status(400).json({
         error: `${body.name ? 'Number' : 'Name'}  is missing`
     })
-  } else if (persons.find(n => n.name === body.name)) {
-    return response.status(400).json({
-        error: 'Name must be unique'
-    })
-  }
+  } // else if (persons.find(n => n.name === body.name)) {
+  //   return response.status(400).json({
+  //       error: 'Name must be unique'
+  //   })
+  // }
 
-  const person = {
-    ...body,
-    id: generateId()
-  }
-  persons = persons.concat(person)
-  response.json(person)
+  const contact = new Contact({
+    ...body, date: new Date()
+  })
+  contact.save().then(response => {
+    response.json(response)
+  })
 })
 
 app.get('/info', (request, response) => {
