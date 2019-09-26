@@ -73,8 +73,8 @@ app.post('/api/persons', (request, response) => {
   const contact = new Contact({
     ...body, date: new Date()
   })
-  contact.save().then(response => {
-    response.json(response)
+  contact.save().then(savedContact => {
+    response.json(savedContact)
   })
 })
 
